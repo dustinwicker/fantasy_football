@@ -19,15 +19,20 @@ league = League(league_id=160370,
        espn_s2=os.environ.get('ESPN_S2'),
        swid=os.environ.get('ESPN_SWID'))
 
-get_public_attributes(league)
-
-
 
 teams = league.teams
 for team in teams:
+    roster = team.roster
+    for player in roster:
         break
+    break
 
+roster = team.roster
+
+league_attrib = get_public_attributes(league)
 team_attrib = get_public_attributes(team)
+player_attrib = get_public_attributes(player)
+
 
 df = []
 for team in teams:
@@ -35,10 +40,11 @@ for team in teams:
                   team.scores, team.standing, team.stats, team.ties, team.trades, team.wins])
 pd.DataFrame(df)
 
-df = []
+team_overall, team_season = [], []
 for team in teams:
-       df.append([team.owners, team.acquisitions, team.drops, team.losses, team.standing, team.stats, team.ties,
-                  team.trades, team.wins])
+       team_overall.append([team.owners, team.acquisitions, team.drops, team.losses, team.standing, team.stats,
+                            team.ties, team.trades, team.wins])
+       team_season.append([team.owners, team.scores, team.mov, team.outcomes, team.roster, team.schedule])
        roster = team.roster
        roster[0]
        for i, p in enumerate(roster):
@@ -48,7 +54,14 @@ for team in teams:
 
 player_attrib = get_public_attributes(roster[0])
 
-print(pd.DataFrame(df, columns=team_attrib[:3] + [team_attrib[5]] + team_attrib[-5:]))
+team_overall = pd.DataFrame(team_overall, columns=['owners', 'acquisitions', 'drops', 'losses', 'standing', 'stats',
+                                                   'ties', 'trades', 'wins'])
+team_overall.owners = team_overall.owners.apply(lambda x: x[0].get('firstName') + ' ' + x[0].get('lastName'))
+
+team_season = pd.DataFrame(team_season, columns=['owners', 'scores', 'mov', 'outcomes', 'roster', 'schedule'])
+team_season.owners = team_season.owners.apply(lambda x: x[0].get('firstName') + ' ' + x[0].get('lastName'))
+
+set(team_attrib) - set(team_overall.columns)
 
 
 print(league.teams)
