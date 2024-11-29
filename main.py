@@ -11,8 +11,8 @@ pd.set_option('display.max_rows', 250)
 pd.set_option('display.max_colwidth', None)
 
 
-def get_public_attributes(obj: object) -> list:
-       """Retrieve public attributes of obj."""
+def get_attributes(obj: object) -> list:
+       """Retrieve attributes of obj."""
        return sorted([x for x in dir(obj) if not x.startswith('_') if not (x.startswith('__') and x.endswith('__'))])
 
 year_begin, year, _ = 2011, datetime.datetime.today().year, []
@@ -62,20 +62,23 @@ draft = league.draft
 for d in draft:
     break
 
+for l in _:
+    break
+
+for p in t.roster:
+    break
+
+l_attrib = get_attributes(l)
+t_attrib = get_attributes(t)
+p_attrib = get_attributes(p)
+
 t_, r_, p_ = [], [], []
 for l in _:
-    print(f"\n{l}")
+    l_d = {a: getattr(l, a) for a in l_attrib}
     for t in l.teams:
-        t_.append([t.owners, t.acquisitions, t.drops, t.losses, t.standing, t.ties, t.trades, t.wins,
-                  t.acquisition_budget_spent, t.division_id, t.division_name, t.playoff_pct,
-                  t.owners, t.scores, t.mov, t.outcomes, t.roster, t.schedule, t.final_standing, t.get_player_name, t.logo_url, t.playoff_pct,
-                    t.points_against, t.points_for, t.schedule, t.scores, t.stats, t.streak_length,
-                    t.streak_type, t.team_abbrev, t.team_id, t.team_name, t.waiver_rank, t.stats, t.draft_projected_rank, t.standing])
+        t_d = {a: getattr(t, a) for a in t_attrib}
         for p in t.roster:
-            p_.append([p.acquisitionType, p.eligibleSlots, p.injured, p.injuryStatus,
-                                p.lineupSlot, p.name, p.onTeamId, p.posRank,
-                                p.position,
-                                p.proTeam, p.schedule, p.stats])
+            p_d = {a: getattr(p, a) for a in p_attrib}
 
 t = pd.DataFrame(t_)
 t[0] = t[0].apply(lambda x: x[0].get('firstName') + ' ' + x[0].get('lastName'))
@@ -92,12 +95,15 @@ for score in scoreboard:
     break
 
 l = league.settings
-for _ in l:
-    break
 
-l_attrib = get_public_attributes(l)
-t_attrib = get_public_attributes(t)
-p_attrib = get_public_attributes(p)
+
+
+
+
+
+
+
+
 score_attrib = get_public_attributes(score)
 d_attrib = get_public_attributes(d)
 l_attrib = get_public_attributes(l)
