@@ -72,15 +72,20 @@ l_attrib = get_attributes(l)
 t_attrib = get_attributes(t)
 p_attrib = get_attributes(p)
 
-t_, r_, p_ = [], [], []
+l_, t_, r_, p_ = [], [], [], []
 for l in _:
     l_d = {a: getattr(l, a) for a in l_attrib}
+    l_.append(l_d)
     for t in l.teams:
         t_d = {a: getattr(t, a) for a in t_attrib}
+        t_.append(t_d)
         for p in t.roster:
             p_d = {a: getattr(p, a) for a in p_attrib}
+            p_.append(p_d)
 
+l = pd.DataFrame(l_)
 t = pd.DataFrame(t_)
+p = pd.DataFrame(p_)
 t[0] = t[0].apply(lambda x: x[0].get('firstName') + ' ' + x[0].get('lastName'))
 
 c = ['owners', 'acquisitions', 'drops', 'losses', 'standing','ties', 'trades', 'wins', 'acquisition_budget_spent',
