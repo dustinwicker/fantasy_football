@@ -1,6 +1,7 @@
 import datetime
 from espn_api.football import League
 import pandas as pd
+import os
 
 # create separate script
 # Increase maximum width in characters of columns - will put all columns in same line in console readout
@@ -18,8 +19,8 @@ def get_attributes(obj: object) -> list:
 year_begin, year, _ = 2011, datetime.datetime.today().year, []
 for y in range(year_begin, year+1):
     league = League(league_id=160370, year=y,
-           espn_s2='AEAgIpAUkbOqdV%2BrggFglx1Np64I1zWR93ktbN%2BYKuZxxVchGjV7ay%2FAHzyAJuyIAACJA18oIzM%2BfT%2BvBLlYiZFJhkImPjfO3Zb8Hbv5Dkx0Zm0vXbex31pZPl7MGI72BO7Hr7oNGKzyKbDP%2FTBbVWm%2B3Xnh7wC53Vq6zepV7vwjTwjvX4BfcAVt4bd2O6M7Y3nqRpT%2BM0J9qaDjxE%2F%2BTKmKNqUqeAeCJMsZlZokgw6o%2BiNj8JY8SeqV5E4fhQBmTv%2BWYxTFwVQ8o2O%2FNwPsfZar',
-           swid="{C4590B74-E8A2-4628-8ACF-B0BE243C018A}")
+           espn_s2=os.environ.get('ESPN_S2'),
+           swid=os.environ.get('ESPN_SWID'))
     _.extend([league])
 
 #league.box_scores()
