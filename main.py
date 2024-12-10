@@ -2,7 +2,7 @@ import datetime
 from espn_api.football import League
 import pandas as pd
 import os
-#tets
+
 # create separate script
 # Increase maximum width in characters of columns - will put all columns in same line in console readout
 pd.set_option('expand_frame_repr', False)
@@ -16,48 +16,36 @@ def get_attributes(obj: object) -> list:
        """Retrieve attributes of obj."""
        return sorted([x for x in dir(obj) if not x.startswith('_') if not (x.startswith('__') and x.endswith('__'))])
 
-year_begin, year, _ = 2011, datetime.datetime.today().year, []
+year_begin, year, league = 2011, datetime.datetime.today().year, []
 for y in range(year_begin, year+1):
-    league = League(league_id=160370, year=y,
-           espn_s2=os.environ.get('ESPN_S2'),
-           swid=os.environ.get('ESPN_SWID'))
-    _.extend([league])
+    _ = League(league_id=160370, year=y, espn_s2=os.environ.get('ESPN_S2'), swid=os.environ.get('ESPN_SWID'))
+    league.extend([_])
 
-#league.box_scores()
+for ind, l in enumerate(league):
+    if ind == 0:
+        league_attrib = get_attributes(l)
 
-currentMatchupPeriod = league.currentMatchupPeriod
-league.current_week
-league.espn_request
-league.finalScoringPeriod
-league.firstScoringPeriod
-league.free_agents()
-league.get_team_data()
-league.league_id
-league.load_roster_week()
-league.logger
-league.members
-league.message_board
+league_data, team_data, roster_data, player_data = [], [], [], []
+for ind,l in enumerate(league):
+    if ind == 0:
+        league_attrib = get_attributes(l)
+    l_ = {a: getattr(l, a) for a in league_attrib}
+    league_data.append(l_)
+    for ind, t in enumerate(league.teams:
+        t_d = {a: getattr(t, a) for a in t_attrib}
+        t_.append(t_d)
+        for p in t.roster:
+            p_d = {a: getattr(p, a) for a in p_attrib}
+            p_.append(p_d)
 
-league.nfl_week
-league.player_info
-league.player_map
-league.power_rankings
-league.previousSeasons
-league.recent_activity
-league.refresh
-league.refresh_draft
-league.scoreboard
-league.scoringPeriodId
-league.settings
-league.standings()
-league.standings_weekly
-league.year()
 
-league.least_scored_week()
-league.least_scorer()
-league.most_points_against()
-league.top_scored_week()
-league.top_scorer()
+
+
+
+
+
+
+
 
 draft = league.draft
 for d in draft:
@@ -73,16 +61,7 @@ l_attrib = get_attributes(l)
 t_attrib = get_attributes(t)
 p_attrib = get_attributes(p)
 
-l_, t_, r_, p_ = [], [], [], []
-for l in _:
-    l_d = {a: getattr(l, a) for a in l_attrib}
-    l_.append(l_d)
-    for t in l.teams:
-        t_d = {a: getattr(t, a) for a in t_attrib}
-        t_.append(t_d)
-        for p in t.roster:
-            p_d = {a: getattr(p, a) for a in p_attrib}
-            p_.append(p_d)
+
 
 l = pd.DataFrame(l_)
 t = pd.DataFrame(t_)
