@@ -24,27 +24,40 @@ for y in range(year_begin, year+1):
 for ind, l in enumerate(league):
     if ind == 0:
         league_attrib = get_attributes(l)
+        l.teams
 
 league_data, team_data, roster_data, player_data = [], [], [], []
-for ind,l in enumerate(league):
-    if ind == 0:
-        league_attrib = get_attributes(l)
-    l_ = {a: getattr(l, a) for a in league_attrib}
+for l in league:
+    l_ = {a: getattr(l, a) for a in get_attributes(l)}
     league_data.append(l_)
-    for ind, t in enumerate(league.teams:
-        t_d = {a: getattr(t, a) for a in t_attrib}
-        t_.append(t_d)
+    for t in l.teams:
+        t_ = {a: getattr(t, a) for a in get_attributes(t)}
+        team_data.append(t_)
         for p in t.roster:
-            p_d = {a: getattr(p, a) for a in p_attrib}
-            p_.append(p_d)
+            p_d = {a: getattr(p, a) for a in get_attributes(p)}
+            player_data.append(p_d)
+
+player_data = pd.DataFrame(player_data)
+player_data
+p = player_data.stats.apply(lambda x: list(x.values()))
+p = p[p.apply(lambda x: len(x)>0)]
+p.apply(lambda x: len(x)).value_counts()
+p.apply(lambda x: x[0].keys())
+p = p[p.apply(lambda x: len(x)>1)]
+len(p.loc[1400])
+p.apply(lambda x: x[1])
+p = p[p.apply(lambda x: len(x)>2)]
 
 
-
-
-
-
-
-
+wr = player_data.loc[player_data.position=="WR"]
+wr = wr[['name', 'stats']]
+wr.loc[2].stats[0].keys()
+wr.loc[2].stats[0]['breakdown'].keys()
+wr.loc[2].stats[0]['breakdown'].values()
+df = pd.DataFrame(wr.stats.apply(lambda x: list(x.values())))
+df.stats.apply(lambda x: x[0].keys())
+wr = wr.merge(df, left_index=True, right_index=True)
+pd.DataFrame(wr.stats_y.apply(lambda x: list(x.values())[0]))
 
 
 draft = league.draft
@@ -57,9 +70,7 @@ for l in _:
 for p in t.roster:
     break
 
-l_attrib = get_attributes(l)
-t_attrib = get_attributes(t)
-p_attrib = get_attributes(p)
+
 
 
 
