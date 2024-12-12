@@ -40,15 +40,6 @@ for l in league:
             player_data.append(p_)
 
 player_data = pd.DataFrame(player_data)
-player_data
-p = player_data.stats.apply(lambda x: list(x.values()))
-p = p[p.apply(lambda x: len(x)>0)]
-p.apply(lambda x: len(x)).value_counts()
-p.apply(lambda x: x[0].keys())
-p = p[p.apply(lambda x: len(x)>1)]
-len(p.loc[1400])
-p.apply(lambda x: x[1])
-p = p[p.apply(lambda x: len(x)>2)]
 
 
 d = player_data.loc[(player_data.year==2024) & (player_data.position=="D/ST")]
