@@ -32,10 +32,12 @@ for l in league:
     league_data.append(l_)
     for t in l.teams:
         t_ = {a: getattr(t, a) for a in get_attributes(t)}
+        t_['year'] = l.year
         team_data.append(t_)
         for p in t.roster:
-            p_d = {a: getattr(p, a) for a in get_attributes(p)}
-            player_data.append(p_d)
+            p_ = {a: getattr(p, a) for a in get_attributes(p)}
+            p_['year'] = l.year
+            player_data.append(p_)
 
 player_data = pd.DataFrame(player_data)
 player_data
@@ -49,98 +51,22 @@ p.apply(lambda x: x[1])
 p = p[p.apply(lambda x: len(x)>2)]
 
 
-wr = player_data.loc[player_data.position=="WR"]
-wr = wr[['name', 'stats']]
-wr.loc[2].stats[0].keys()
-wr.loc[2].stats[0]['breakdown'].keys()
-wr.loc[2].stats[0]['breakdown'].values()
-df = pd.DataFrame(wr.stats.apply(lambda x: list(x.values())))
-df.stats.apply(lambda x: x[0].keys())
-wr = wr.merge(df, left_index=True, right_index=True)
-pd.DataFrame(wr.stats_y.apply(lambda x: list(x.values())[0]))
-
-
-draft = league.draft
-for d in draft:
-    break
-
-for l in _:
-    break
-
-for p in t.roster:
-    break
-
-
-
-
-
-l = pd.DataFrame(l_)
-t = pd.DataFrame(t_)
-p = pd.DataFrame(p_)
-t[0] = t[0].apply(lambda x: x[0].get('firstName') + ' ' + x[0].get('lastName'))
-
-c = ['owners', 'acquisitions', 'drops', 'losses', 'standing','ties', 'trades', 'wins', 'acquisition_budget_spent',
-     'division_id', 'division_name', 'playoff_pct']
-t_= t.iloc[:, :len(c)]
-t_.columns = c
-
-['owners', 'scores', 'mov', 'outcomes', 'roster', 'schedule']
-
-scoreboard = league.scoreboard(1)
-for score in scoreboard:
-    break
-
-l = league.settings
-
-
-
-
-
-
-
-
-
-score_attrib = get_public_attributes(score)
-d_attrib = get_public_attributes(d)
-l_attrib = get_public_attributes(l)
-
-
-df = []
-for team in teams:
-       df.append([team.acquisitions, team.drops, team.losses, team.mov, team.outcomes, team.owners, team.schedule,
-                  team.scores, team.standing, team.stats, team.ties, team.trades, team.wins])
-pd.DataFrame(df)
-
-team_overall, team_season = [], []
-player_list = []
-for team in teams:
-       team_overall.append([team.owners, team.acquisitions, team.drops, team.losses, team.standing, team.stats,
-                            team.ties, team.trades, team.wins])
-       team_season.append([team.owners, team.scores, team.mov, team.outcomes, team.roster, team.schedule])
-       roster = team.roster
-       for player in roster:
-           player_list.append([player.acquisitionType, player.eligibleSlots, player.injured, player.injuryStatus,
-                    player.lineupSlot, player.name, player.onTeamId, player.playerId, player.posRank, player.position,
-                    player.proTeam, player.schedule, player.stats])
-
-
-team_overall = pd.DataFrame(team_overall, columns=)
-team_overall.owners = team_overall.owners.apply(lambda x: x[0].get('firstName') + ' ' + x[0].get('lastName'))
-
-team_season = pd.DataFrame(team_season, columns=)
-
-
-player = pd.DataFrame(player_list)
-
-set(team_attrib) - set(team_overall.columns)
-
-
-print(league.teams)
-d = dir(team)
-r = team.roster
-
-[x for x in dir(p) if '__' not in x and '_' not in x]
-[x for x in dir(team) if '__' not in x and '_' not in x]
-p.stats[0].keys()
-
-teams = league.teams
+d = player_data.loc[(player_data.year==2024) & (player_data.position=="D/ST")]
+d.reset_index(inplace=True)
+for ind, keys in enumerate(d.stats.apply(lambda x: x.keys())):
+    capture_info = []
+    for key in keys:
+        info = d.loc[ind, 'stats'].get(15).keys()
+        for i in info:
+            print(f'---{i}')
+            result = d.loc[ind, 'stats'].get(key).get(i)
+            print(result)
+            if isinstance(result, float) or (result==0):
+                result = [[i], [result]]
+            elif isinstance(result, dict):
+                result = d.loc[ind, 'stats'].get(key).get(i)
+                list(result.keys()), list(result.values())
+                result = [list(result.keys()), list(result.values())]
+                print(result)
+                print(len(result))
+            capture_info.append(result)
