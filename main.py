@@ -41,23 +41,23 @@ for l in league:
 
 player_data = pd.DataFrame(player_data)
 
-
 d = player_data.loc[(player_data.year==2024) & (player_data.position=="D/ST")]
 d.reset_index(inplace=True)
+capture_info = []
 for ind, keys in enumerate(d.stats.apply(lambda x: x.keys())):
-    capture_info = []
+    print(ind, keys)
+    capture_ind_info = {}
     for key in keys:
-        info = d.loc[ind, 'stats'].get(15).keys()
+        info = d.loc[ind, 'stats'].get(key).keys()
         for i in info:
-            print(f'---{i}')
             result = d.loc[ind, 'stats'].get(key).get(i)
-            print(result)
             if isinstance(result, float) or (result==0):
-                result = [[i], [result]]
+                result = {i: result}
+                capture_ind_info.update(result)
             elif isinstance(result, dict):
                 result = d.loc[ind, 'stats'].get(key).get(i)
-                list(result.keys()), list(result.values())
-                result = [list(result.keys()), list(result.values())]
-                print(result)
-                print(len(result))
-            capture_info.append(result)
+                for k, v in result.items():
+                    r = {k: v}
+                    capture_ind_info.update(r)
+    capture_info.append(capture_ind_info)
+df = pd.DataFrame(capture_info)
