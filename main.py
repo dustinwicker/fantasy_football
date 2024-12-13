@@ -67,34 +67,34 @@ d = d.merge(df, left_index=True, right_index=True)
 
 capture_info = []
 free_agents = l.free_agents(position='D/ST')
-for index, team in enumerate(free_agents):
-    capture_index_info = {}
-    team_information = vars(team)
-    for key, value in team_information.items():
+for index, free_agent in enumerate(free_agents):
+    capture_free_agent_info = {}
+    free_agent_available_data = vars(free_agent)
+    for key, value in free_agent_available_data.items():
         if isinstance(value, float) or isinstance(value, str) or (value == 0):
             result = {key: value}
-            capture_index_info.update(result)
+            capture_free_agent_info.update(result)
         elif isinstance(value, dict):
-            for k, v in value.items():
-                # print(k)
-                v_ = value.get(k)
-                if isinstance(v_, float) or isinstance(v_, str) or (v_ == 0):
-                    result = {k: v_}
-                    # print(result)
-                    capture_index_info.update(result)
-                elif isinstance(v_, dict):
-                    for k__, v__ in v_.items():
-                        v___ = v_.get(k__)
-                        if isinstance(v___, float) or isinstance(v___, str) or (v___ == 0):
-                            result = {k__: v___}
-                        elif isinstance(v___, dict):
-                            print(v___)
-
-
-
-                r = {k_: v_}
-                capture_index_info.update(r)
-    capture_info.append(capture_ind_info)
+            free_agent_available_data = value
+            for key, value in free_agent_available_data.items():
+                if isinstance(value, float) or isinstance(value, str) or (value == 0):
+                    result = {key: value}
+                    capture_free_agent_info.update(result)
+                elif isinstance(value, dict):
+                    free_agent_available_data = value
+                    for key, value in free_agent_available_data.items():
+                        if isinstance(value, float) or isinstance(value, str) or (value == 0):
+                            result = {key: value}
+                            capture_free_agent_info.update(result)
+                        elif isinstance(value, dict):
+                            free_agent_available_data = value
+                            for key, value in free_agent_available_data.items():
+                                if isinstance(value, float) or isinstance(value, str) or (value == 0):
+                                    result = {key: value}
+                                    capture_free_agent_info.update(result)
+                                elif isinstance(value, dict):
+                                    print(result)
+    capture_info.append(capture_free_agent_info)
 df_ = pd.DataFrame(capture_info)
 
 cols = sorted(set(d.columns) & set(df_.columns))
